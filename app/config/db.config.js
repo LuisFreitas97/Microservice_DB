@@ -16,13 +16,13 @@ export class DbConfig {
             else {
                 console.log("Connected to database");
                 db.close();
+                /*var dbase = db.db("ThesisBD"); //here
+                dbase.createCollection("testCollection", function(err, res) {
+                    if (err) throw err;
+                    console.log("Collection created!");
+                    db.close();   //close method has also been moved to client obj
+                });*/
             }
-            /*var dbase = db.db("ThesisBD"); //here
-            dbase.createCollection("testCollection", function(err, res) {
-                if (err) throw err;
-                console.log("Collection created!");
-                db.close();   //close method has also been moved to client obj
-            });*/
         });
     }
 
