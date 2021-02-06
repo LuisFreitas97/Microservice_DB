@@ -1,0 +1,26 @@
+{
+  "name": "microservice_bd",
+  "version": "1.0.0",
+  "description": "Micro Serviço com base de dados Mongo",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuisFreitas97/Microservice_DB.git"
+  },
+  "author": "LuisFreitas97",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuisFreitas97/Microservice_DB/issues"
+  },
+  "homepage": "https://github.com/LuisFreitas97/Microservice_DB#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.4"
+  }
+}
