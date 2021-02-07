@@ -7,7 +7,7 @@ dotenv.config();
 
 export class DbConfig {
     constructor(){
-        this.url = 'mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@' + process.env.DB_URL + ':' + process.env.DB_PORT + '/ThesisBD?authSource=admin';
+        this.url = 'mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@' + process.env.DB_URL + ':' + process.env.DB_PORT + '/ThesisDB?authSource=admin';
     }
 
     connectToDB(){
