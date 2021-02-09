@@ -4,6 +4,7 @@ const { MongoClient } = mongoClient;
 import dotenv from 'dotenv';
 dotenv.config();
 
+var _db;
 
 export class DbConfig {
     constructor(){
@@ -15,15 +16,19 @@ export class DbConfig {
             if (err) throw err;
             else {
                 console.log("Connected to database");
-                db.close();
-                /*var dbase = db.db("ThesisDB"); //here
-                dbase.createCollection("testCollection", function(err, res) {
+                // db.close();
+                _db = db.db("ThesisDB"); //here
+                /*dbase.createCollection("testCollection", function(err, res) {
                     if (err) throw err;
                     console.log("Collection created!");
                     db.close();   //close method has also been moved to client obj
                 });*/
             }
         });
+    }
+
+    getDatabaseInstance(){
+        return _db;
     }
 
 };
