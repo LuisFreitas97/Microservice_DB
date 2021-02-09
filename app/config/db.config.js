@@ -16,7 +16,7 @@ export class DbConfig {
             else {
                 console.log("Connected to database");
                 db.close();
-                /*var dbase = db.db("ThesisBD"); //here
+                /*var dbase = db.db("ThesisDB"); //here
                 dbase.createCollection("testCollection", function(err, res) {
                     if (err) throw err;
                     console.log("Collection created!");
