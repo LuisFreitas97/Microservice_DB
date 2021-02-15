@@ -7,11 +7,13 @@ dotenv.config();
 var _db;
 
 export class DbConfig {
-    constructor(){
-        this.url = 'mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@' + process.env.DB_URL + ':' + process.env.DB_PORT + '/ThesisDB?authSource=admin';
-    }
+    // constructor(){
+    //     this.url = 'mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@' + process.env.DB_URL + ':' + process.env.DB_PORT + '/ThesisDB?authSource=admin';
+    // }
 
-    connectToDB(){
+    static connectToDB(){
+        this.url = 'mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@' + process.env.DB_URL + ':' + process.env.DB_PORT + '/ThesisDB?authSource=admin';
+        
         MongoClient.connect(this.url, { useUnifiedTopology: true}, function(err, db) {   //here db is the client obj
             if (err) throw err;
             else {
@@ -27,7 +29,7 @@ export class DbConfig {
         });
     }
 
-    getDatabaseInstance(){
+    static getDatabaseInstance(){
         return _db;
     }
 

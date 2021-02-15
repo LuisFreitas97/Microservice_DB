@@ -28,8 +28,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/',router);
 
 // make db connection
-var db = new DbConfig();
-db.connectToDB();
+// var db = new DbConfig();
+DbConfig.connectToDB();
 
 // set port, listen for requests
 const PORT = process.env.SERVICE_PORT || 8080;
