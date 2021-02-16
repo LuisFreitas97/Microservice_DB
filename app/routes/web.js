@@ -1,5 +1,5 @@
 import express from 'express';
-import { InsertJson } from '/app/controllers/insertJson.js';
+import { InsertJson } from '../controllers/InsertJson.js';
 
 export const router = express.Router();
 
@@ -9,6 +9,6 @@ router.get("/", (req, res) => {
 
   // Rota para inserir um json na base de dados
   router.post("/insertJsonData", (req, res) => {
-    InsertJson.InsertJsonInBd();
+    InsertJson.insertJsonInBd(req);
     res.json({ message: "Data inserted" });
   });

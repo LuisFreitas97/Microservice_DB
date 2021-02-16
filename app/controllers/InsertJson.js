@@ -2,7 +2,7 @@ import { DbConfig } from '../config/db.config.js';
 import { CheckJson } from '../utils/CheckJson.js';
 import { DatabaseUtils } from '../utils/DatabaseUtils.js';
 
-export class InsertJsonInBd {
+export class InsertJson {
     static insertJsonInBd(req) {
         //check if the data is valid
         if(!CheckJson.isValid(req)){
@@ -23,11 +23,22 @@ export class InsertJsonInBd {
             return { "msg": "invalid collection name", "code": 500 };
         }
 
-        const collection = database.collection(collectionName);
+        const collection = db.collection(collectionName);
 
-        const result = await collection.insertOne(json);
+        // const result = await collection.insertOne(json);
+        var error = false;
+        collection.insertMany(json, (err, res) => {
+            if (err) error = true;
 
-        return { "msg": "data inserted with success", "code": 201 };
+            else error = false;
+            
+            console.log("Number of documents inserted: " + res.insertedCount);
+            });
+
+        if(error)
+            return { "msg": "error inserting data", "code": 500 };
+        else
+            return { "msg": "data inserted with success", "code": 201 };
     }
 };
 
