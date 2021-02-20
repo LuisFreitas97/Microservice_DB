@@ -3,7 +3,7 @@ import { CheckJson } from '../utils/CheckJson.js';
 import { DatabaseUtils } from '../utils/DatabaseUtils.js';
 
 export class InsertJson {
-    static insertJsonInBd(req) {
+    static async insertJsonInBd(req) {
         //check if the data is valid
         if(!CheckJson.isValid(req)){
             return { "msg": "invalid data to insert", "code": 500 };
@@ -15,19 +15,20 @@ export class InsertJson {
         }
 
         var collectionName = req.body.collectionName;
-        if(DatabaseUtils.existsCollectionName(db,collectionName)){
-            return { "msg": "collection name already exists", "code": 500 };
-        }
-
         if(!collectionName){
             return { "msg": "invalid collection name", "code": 500 };
+        }
+        
+        var exists = await DatabaseUtils.existsCollectionName(db,collectionName);
+        if(exists){
+            return { "msg": "collection name already exists", "code": 500 };
         }
 
         const collection = db.collection(collectionName);
 
         // const result = await collection.insertOne(json);
         var error = false;
-        collection.insertMany(json, (err, res) => {
+        await collection.insertMany(json, (err, res) => {
             if (err) error = true;
 
             else error = false;
