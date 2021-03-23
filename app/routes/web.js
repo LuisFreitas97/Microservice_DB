@@ -12,10 +12,10 @@ router.get("/", (req, res) => {
 // Rota para inserir um json na base de dados
 router.post("/insertJsonData", asyncHandler(async (req, res, next) => {
   var result = await InsertJson.insertJsonInBd(req);
-  res.json(result);
+  res.status(result.code).json(result.msg);
 }));
 
 router.get("/collection", asyncHandler(async (req, res, next) => {
   var result = await Collection.getCollection(req);
-  res.json(result);
+  res.status(result.code).json(result.msg);
 }));
