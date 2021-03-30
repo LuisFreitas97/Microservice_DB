@@ -20,10 +20,10 @@ export class DbConfig {
                 console.log("Connected to database");
                 // db.close();
                 _db = db.db("ThesisDB"); //here
-                /*dbase.createCollection("testCollection", function(err, res) {
+               /* _db.createCollection("testCollection", function(err, res) {
                     if (err) throw err;
                     console.log("Collection created!");
-                    db.close();   //close method has also been moved to client obj
+                    //db.close();   //close method has also been moved to client obj
                 });*/
             }
         });
