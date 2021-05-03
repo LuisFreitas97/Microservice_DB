@@ -32,8 +32,10 @@ export class InsertJson {
             if (err) error = true;
 
             else error = false;
+
+            console.log(err);
             
-            console.log("Number of documents inserted: " + res.insertedCount);
+            // console.log("Number of documents inserted: " + res.insertedCount);
             });
 
         if(error)
