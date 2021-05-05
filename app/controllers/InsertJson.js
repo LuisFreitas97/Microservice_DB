@@ -19,10 +19,10 @@ export class InsertJson {
             return { "msg": "invalid collection name", "code": 500 };
         }
         
-        var exists = await DatabaseUtils.existsCollectionName(db,collectionName);
-        if(exists){
-            return { "msg": "collection name already exists", "code": 500 };
-        }
+        // var exists = await DatabaseUtils.existsCollectionName(db,collectionName);
+        // if(exists){
+        //     return { "msg": "collection name already exists", "code": 500 };
+        // }
 
         const collection = db.collection(collectionName);
 
