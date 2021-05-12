@@ -17,5 +17,5 @@ router.post("/insertJsonData", asyncHandler(async (req, res, next) => {
 
 router.get("/collection", asyncHandler(async (req, res, next) => {
   var result = await Collection.getCollection(req);
-  res.status(result.code).json(result.msg);
+  res.status(result.code).json(result);
 }));
