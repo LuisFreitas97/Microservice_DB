@@ -1,6 +1,7 @@
 import express from 'express';
 import { InsertJson } from '../controllers/InsertJson.js';
 import { Collection } from '../controllers/Collection.js';
+import { DrawAreas } from '../Services/Areas/DrawAreas.js';
 import asyncHandler  from 'express-async-handler';
 
 export const router = express.Router();
@@ -17,5 +18,10 @@ router.post("/insertJsonData", asyncHandler(async (req, res, next) => {
 
 router.get("/collection", asyncHandler(async (req, res, next) => {
   var result = await Collection.getCollection(req);
+  res.status(result.code).json(result);
+}));
+
+router.get("/drawAreas", asyncHandler(async (req, res, next) => {
+  var result = await DrawAreas.getDrawAreas(req);
   res.status(result.code).json(result);
 }));
