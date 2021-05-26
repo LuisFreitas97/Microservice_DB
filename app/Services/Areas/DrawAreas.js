@@ -2,21 +2,13 @@ import { DbConfig } from '../../config/db.config.js';
 import { DatabaseUtils } from '../../utils/DatabaseUtils.js';
 
 export class DrawAreas {
-    static async getDrawAreas() {
-        // var db = DbConfig.getDatabaseInstance();
-        // if (!db) {
-        //     return { "msg": "cannot connect to database", "code": 500 };
-        // }
-        // var collectionName = "drawAreas";
-
-        // var exists = await DatabaseUtils.existsCollectionName(db, collectionName);
-        // if (!exists) {
-        //     return { "msg": "collection not found", "code": 404 };
-        // }
-        // const collection = await db.collection(collectionName);
-        // var data = await collection.find({}).toArray();
+    static async getDrawAreas(req) {
         var data = await DrawAreas.getDrawAreasFromDb();
-        data = DrawAreas.changeCoordOrder(data[0].features);
+        if(!req.query.keepOrder){
+            data = DrawAreas.changeCoordOrder(data[0].features);
+        }else{
+            data = data[0].features;
+        }
 
         return { "msg": "success", "data": data, "code": 201 };
     }
