@@ -30,7 +30,7 @@ export class WeatherAPI {
         }
 
         var bgri11 = "17062800111";
-        var date = "2021-05-27T20:42:59+0100";
+        var date = "2021-05-27T06:00:00+0000";
         var collectionName = WeatherAPI.collectionName;
 
         var exists = await DatabaseUtils.existsCollectionName(db, collectionName);
@@ -38,8 +38,11 @@ export class WeatherAPI {
             return { "msg": "collection not found", "code": 404 };
         }
         const collection = await db.collection(collectionName);
-        var data = await collection.find({ BGRI11: bgri11, created: date }).toArray();
-        return { "msg": "success", "data": data, "code": 201 };
+        var data = await collection.findOne({ BGRI11: bgri11, datetime: date });
+        var index = data.datetime.indexOf(date);
+        var weatherData = { atts : data.atts, data: data.data[index]};
+        
+        return { "msg": "success", "data": weatherData, "code": 201 };
     }
 };
 

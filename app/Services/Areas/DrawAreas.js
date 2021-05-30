@@ -1,5 +1,6 @@
 import { DbConfig } from '../../config/db.config.js';
 import { DatabaseUtils } from '../../utils/DatabaseUtils.js';
+// import { WeatherAPI } from '../Weather/WeatherAPI.js';
 
 export class DrawAreas {
     static async getDrawAreas(req) {
@@ -9,6 +10,10 @@ export class DrawAreas {
         }else{
             data = data[0].features;
         }
+        // Get weather data to area
+        // for(drawArea of data){
+        //     await WeatherAPI.getAreaWeatherData(drawArea.properties.BGRI11);
+        // }
 
         return { "msg": "success", "data": data, "code": 201 };
     }
