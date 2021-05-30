@@ -3,8 +3,8 @@ export class DatabaseUtils {
         var exists = false;
         var collections = await db.listCollections().toArray();
         collections.forEach(coll => {
-            console.log(coll.name);
-            console.log(collName);
+            // console.log(coll.name);
+            // console.log(collName);
             if (coll.name == collName) {
                 exists = true;
             }
@@ -21,7 +21,7 @@ export class DatabaseUtils {
         //     });
         //     return exists;
         // });
-        console.log(exists);
+        // console.log(exists);
         return exists;
     }
 };

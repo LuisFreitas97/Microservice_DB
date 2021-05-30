@@ -33,7 +33,7 @@ export class InsertJson {
 
             else error = false;
 
-            console.log(err);
+            // console.log(err);
             
             // console.log("Number of documents inserted: " + res.insertedCount);
             });
