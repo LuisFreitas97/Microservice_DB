@@ -31,3 +31,8 @@ router.get("/centers", asyncHandler(async (req, res, next) => {
   var result = await WeatherAPI.saveWeatherDataToArea();
   res.status(result.code).json(result);
 }));
+
+router.get("/areaWeatherInfo", asyncHandler(async (req, res, next) => {
+  var result = await WeatherAPI.getAreaWeatherData(req);
+  res.status(result.code).json(result);
+}));
