@@ -42,9 +42,5 @@ export class DrawAreas {
         });
         return data;
     }
-    static saveAreaCentroid(req)
-    {
-        
-    }
 };
 
