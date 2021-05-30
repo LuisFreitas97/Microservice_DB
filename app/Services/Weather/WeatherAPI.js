@@ -22,7 +22,7 @@ export class WeatherAPI {
         }
         return { "msg": "success", "data": centers, "code": 201 };
     }
-    
+
     static async getAreaWeatherData(req) {
         var db = DbConfig.getDatabaseInstance();
         if (!db) {
@@ -39,9 +39,10 @@ export class WeatherAPI {
         }
         const collection = await db.collection(collectionName);
         var data = await collection.findOne({ BGRI11: bgri11, datetime: date });
+        if (!data) { return {}; }
         var index = data.datetime.indexOf(date);
-        var weatherData = { atts : data.atts, data: data.data[index]};
-        
+        var weatherData = { atts: data.atts, data: data.data[index] };
+
         return { "msg": "success", "data": weatherData, "code": 201 };
     }
 };
