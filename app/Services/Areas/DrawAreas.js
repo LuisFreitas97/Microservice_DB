@@ -1,19 +1,27 @@
 import { DbConfig } from '../../config/db.config.js';
 import { DatabaseUtils } from '../../utils/DatabaseUtils.js';
-// import { WeatherAPI } from '../Weather/WeatherAPI.js';
+import { WeatherAPI } from '../Weather/WeatherAPI.js';
 
 export class DrawAreas {
     static async getDrawAreas(req) {
         var data = await DrawAreas.getDrawAreasFromDb();
-        if(!req.query.keepOrder){
+        if (!req.query.keepOrder) {
             data = DrawAreas.changeCoordOrder(data[0].features);
-        }else{
+        } else {
             data = data[0].features;
         }
+        var date = new Date();
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date = date.toISOString();
+        date = date.substring(0, 19);
+        date = date + "+0000";
+        var weatherData;
         // Get weather data to area
-        // for(drawArea of data){
-        //     await WeatherAPI.getAreaWeatherData(drawArea.properties.BGRI11);
-        // }
+        for (let drawArea of data) {
+            weatherData = await WeatherAPI.getAreaWeatherData(drawArea.properties.BGRI11, date);
+            drawArea.weatherData = weatherData;
+        }
 
         return { "msg": "success", "data": data, "code": 201 };
     }

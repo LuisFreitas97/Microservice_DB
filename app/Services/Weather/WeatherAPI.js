@@ -23,14 +23,14 @@ export class WeatherAPI {
         return { "msg": "success", "data": centers, "code": 201 };
     }
 
-    static async getAreaWeatherData(req) {
+    static async getAreaWeatherData(bgri11, date) {
         var db = DbConfig.getDatabaseInstance();
         if (!db) {
             return { "msg": "cannot connect to database", "code": 500 };
         }
 
-        var bgri11 = "17062800111";
-        var date = "2021-05-27T06:00:00+0000";
+        // var bgri11 = "17062800111";
+        // var date = "2021-05-27T06:00:00+0000";
         var collectionName = WeatherAPI.collectionName;
 
         var exists = await DatabaseUtils.existsCollectionName(db, collectionName);
@@ -43,7 +43,9 @@ export class WeatherAPI {
         var index = data.datetime.indexOf(date);
         var weatherData = { atts: data.atts, data: data.data[index] };
 
-        return { "msg": "success", "data": weatherData, "code": 201 };
+        return weatherData;
+
+        // return { "msg": "success", "data": weatherData, "code": 201 };
     }
 };
 
