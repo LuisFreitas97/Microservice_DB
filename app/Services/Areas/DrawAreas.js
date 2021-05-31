@@ -1,6 +1,7 @@
 import { DbConfig } from '../../config/db.config.js';
 import { DatabaseUtils } from '../../utils/DatabaseUtils.js';
 import { WeatherAPI } from '../Weather/WeatherAPI.js';
+import { DateTime } from '../../utils/DateTime.js';
 
 export class DrawAreas {
     static async getDrawAreas(req) {
@@ -10,12 +11,13 @@ export class DrawAreas {
         } else {
             data = data[0].features;
         }
-        var date = new Date();
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date = date.toISOString();
-        date = date.substring(0, 19);
-        date = date + "+0000";
+        // var date = new Date();
+        // date.setMinutes(0);
+        // date.setSeconds(0);
+        // date = date.toISOString();
+        // date = date.substring(0, 19);
+        // date = date + "+0000";
+        var date = DateTime.getCurrentDate();
         var weatherData;
         // Get weather data to area
         for (let drawArea of data) {
