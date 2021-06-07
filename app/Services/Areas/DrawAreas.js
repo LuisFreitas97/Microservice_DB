@@ -11,12 +11,6 @@ export class DrawAreas {
         } else {
             data = data[0].features;
         }
-        // var date = new Date();
-        // date.setMinutes(0);
-        // date.setSeconds(0);
-        // date = date.toISOString();
-        // date = date.substring(0, 19);
-        // date = date + "+0000";
         var date = DateTime.getCurrentDate();
         var weatherData;
         // Get weather data to area
