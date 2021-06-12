@@ -7,17 +7,20 @@ export class DrawAreas {
     static async getDrawAreas(req) {
         var data = await DrawAreas.getDrawAreasFromDb();
         if (!req.query.keepOrder) {
-            data = DrawAreas.changeCoordOrder(data[0].features);
+            data = DrawAreas.changeCoordOrder(data);
         } else {
-            data = data[0].features;
+            data = data;
         }
         var date = DateTime.getCurrentDate();
-        var weatherData;
-        // Get weather data to area
-        for (let drawArea of data) {
-            weatherData = await WeatherAPI.getAreaWeatherData(drawArea.properties.BGRI11, date);
-            drawArea.weatherData = weatherData;
-        }
+        var weatherData = await WeatherAPI.getWeatherData(date);
+        var weatherObj;
+
+        data.forEach(function (drawArea, i) {
+            weatherObj = weatherData.find(element =>
+                element.BGRI11 === drawArea.properties.BGRI11
+            );
+            drawArea.weatherData = weatherObj;
+        });
 
         return { "msg": "success", "data": data, "code": 201 };
     }
