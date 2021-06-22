@@ -36,3 +36,8 @@ router.get("/areaWeatherInfo", asyncHandler(async (req, res, next) => {
   var result = await WeatherAPI.getAreaWeatherData(req);
   res.status(result.code).json(result);
 }));
+
+router.get("/weatherDataByType", asyncHandler(async (req, res, next) => {
+  var result = await WeatherAPI.getWeatherDataByType(req);
+  res.status(result.code).json(result);
+}));

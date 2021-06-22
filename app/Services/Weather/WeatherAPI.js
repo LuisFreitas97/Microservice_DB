@@ -72,8 +72,17 @@ export class WeatherAPI {
         }
 
         return result;
+    }
 
-        // return { "msg": "success", "data": weatherData, "code": 201 };
+    static async getWeatherDataByType(req) {
+        // check request params
+        var weatherVar = req.params.vars;
+        if(!weatherVar){
+            return { "msg": "Invalid weather data type", "code": 500 };
+        }
+        var date = DateTime.getCurrentDate();
+        var result = await WeatherAPI.getWeatherData(date, weatherVar);
+        return { "msg": "success", "data": result, "code": 201 };
     }
 };
 
