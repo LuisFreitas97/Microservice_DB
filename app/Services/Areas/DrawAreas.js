@@ -12,7 +12,7 @@ export class DrawAreas {
             data = data;
         }
         var date = DateTime.getCurrentDate();
-        var weatherData = await WeatherAPI.getWeatherData(date);
+        var weatherData = await WeatherAPI.getWeatherData(date, WeatherAPI.weatherVars.temperature);
         var weatherObj;
 
         data.forEach(function (drawArea, i) {

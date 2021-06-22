@@ -5,6 +5,7 @@ import { DatabaseUtils } from '../../utils/DatabaseUtils.js';
 
 export class WeatherAPI {
     static collectionName = "weatherAPI";
+    static weatherVars = {'temperature' : 't2'};
 
     static async saveWeatherDataToArea() {
         var centers = [];
@@ -28,9 +29,7 @@ export class WeatherAPI {
         if (!db) {
             return { "msg": "cannot connect to database", "code": 500 };
         }
-
-        // var bgri11 = "17062800111";
-        // var date = "2021-05-27T06:00:00+0000";
+        
         var collectionName = WeatherAPI.collectionName;
 
         var exists = await DatabaseUtils.existsCollectionName(db, collectionName);
@@ -48,7 +47,7 @@ export class WeatherAPI {
         // return { "msg": "success", "data": weatherData, "code": 201 };
     }
 
-    static async getWeatherData(date) {
+    static async getWeatherData(date, weatherVar) {
         var db = DbConfig.getDatabaseInstance();
         if (!db) {
             return { "msg": "cannot connect to database", "code": 500 };
@@ -62,7 +61,7 @@ export class WeatherAPI {
         }
 
         const collection = await db.collection(collectionName);
-        var data = await collection.find({ datetime: date }).toArray();
+        var data = await collection.find({ datetime: date, vars: weatherVar }).toArray();
         if (!data) { return []; }
 
         var result = [];
