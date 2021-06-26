@@ -1,28 +1,47 @@
 import { DrawAreas } from '../Areas/DrawAreas.js';
-import polygonCenter from 'geojson-polygon-center';
 import { DbConfig } from '../../config/db.config.js';
 import { DatabaseUtils } from '../../utils/DatabaseUtils.js';
 import { DateTime } from '../../utils/DateTime.js';
+import { Ajax } from '../../request/ajax.js';
+import qs from 'qs';
+import { InsertJson } from '../../controllers/InsertJson.js';
+import {JsonHelper} from '../../Helpers/JsonHelper.js';
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 export class WeatherAPI {
     static collectionName = "weatherAPI";
-    static weatherVars = {'temperature' : 't2'};
+    static weatherVars = { 'temperature': 't2' };
 
-    static async saveWeatherDataToArea() {
-        var centers = [];
-        var center = {};
+    static async saveWeatherDataToArea(req) {
+        var result;
+        var apiBody = {};
+        var headers = { "auth": { "username": process.env.WEATHER_USER, "password": process.env.WEATHER_PASS }, "content-type": "application/x-www-form-urlencoded" };
+        var error = false;
+
         var drawAreas = await DrawAreas.getDrawAreasFromDb();
-        drawAreas = drawAreas[0].features;
 
-        if (drawAreas && drawAreas.length) {
-            drawAreas.forEach(function (value) {
-                //calculate centroid point 
-                center = polygonCenter(value.geometry);
-                center.BGRI11 = value.properties.BGRI11;
-                centers.push(center);
+        for (const drawArea of drawAreas) {
+            // Get weather data from API
+            apiBody.coord = drawArea.center.coordinates[0] + "," + drawArea.center.coordinates[1];
+            apiBody.vars = req.body.vars;
+            console.log(apiBody);
+            Ajax.postRequest(process.env.WEATHER_API, qs.stringify(apiBody), headers, function (data) {
+                data.BGRI11 = drawArea.properties.BGRI11;
+                data = JsonHelper.convertJson(data);
+                // InsertJson.insertJsonDataInBd(data, WeatherAPI.collectionName);
+            }, function (error) {
+                console.log(error);
+                error = true;
             });
         }
-        return { "msg": "success", "data": centers, "code": 201 };
+        if (error) {
+            result = { 'msg': "internal error", 'code': 500 };
+        } else {
+            result = { "msg": "success", "data": "success", "code": 201 };
+        }
+        return result;
     }
 
     static async getAreaWeatherData(bgri11, date) {
@@ -30,7 +49,7 @@ export class WeatherAPI {
         if (!db) {
             return { "msg": "cannot connect to database", "code": 500 };
         }
-        
+
         var collectionName = WeatherAPI.collectionName;
 
         var exists = await DatabaseUtils.existsCollectionName(db, collectionName);
@@ -78,7 +97,7 @@ export class WeatherAPI {
     static async getWeatherDataByType(req) {
         // check request params
         var weatherVar = req.query.vars;
-        if(!weatherVar){
+        if (!weatherVar) {
             return { "msg": "Invalid weather data type", "code": 500 };
         }
         var date = DateTime.getCurrentDate();
