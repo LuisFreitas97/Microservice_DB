@@ -2,6 +2,7 @@ import { DbConfig } from '../../config/db.config.js';
 import { DatabaseUtils } from '../../utils/DatabaseUtils.js';
 import { WeatherAPI } from '../Weather/WeatherAPI.js';
 import { DateTime } from '../../utils/DateTime.js';
+import polygonCenter from 'geojson-polygon-center';
 
 export class DrawAreas {
     static async getDrawAreas(req) {
@@ -48,6 +49,36 @@ export class DrawAreas {
             });
         });
         return data;
+    }
+    static async calculateDrawAreasCenter() {
+        var drawAreas = await DrawAreas.getDrawAreasFromDb();
+        var center = {};
+        var db = DbConfig.getDatabaseInstance();
+        if (!db) {
+            return { "msg": "cannot connect to database", "code": 500 };
+        }
+        var collectionName = "drawAreas";
+
+        var exists = await DatabaseUtils.existsCollectionName(db, collectionName);
+        if (!exists) {
+            return { "msg": "collection not found", "code": 404 };
+        }
+        const collection = await db.collection(collectionName);
+
+        for (const value of drawAreas) {
+            //calculate centroid point 
+            center = polygonCenter(value.geometry);
+
+            collection.update(
+                { "properties.BGRI11": value.properties.BGRI11 },
+                {
+                    $set: {
+                        center: center,
+                    }
+                }
+            )
+        }
+        return { "msg": "Centers calculated with success", "code": 201 };
     }
 };
 

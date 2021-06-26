@@ -2,6 +2,7 @@ import { DrawAreas } from '../Areas/DrawAreas.js';
 import polygonCenter from 'geojson-polygon-center';
 import { DbConfig } from '../../config/db.config.js';
 import { DatabaseUtils } from '../../utils/DatabaseUtils.js';
+import { DateTime } from '../../utils/DateTime.js';
 
 export class WeatherAPI {
     static collectionName = "weatherAPI";
@@ -40,7 +41,7 @@ export class WeatherAPI {
         var data = await collection.findOne({ BGRI11: bgri11, datetime: date });
         if (!data) { return {}; }
         var index = data.datetime.indexOf(date);
-        var weatherData = { atts: data.atts, data: data.data[index] };
+        var weatherData = { BGRI11: data.BGRI11, atts: data.atts, data: data.data[index] };
 
         return weatherData;
 
@@ -76,7 +77,7 @@ export class WeatherAPI {
 
     static async getWeatherDataByType(req) {
         // check request params
-        var weatherVar = req.params.vars;
+        var weatherVar = req.query.vars;
         if(!weatherVar){
             return { "msg": "Invalid weather data type", "code": 500 };
         }

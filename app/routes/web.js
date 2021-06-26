@@ -41,3 +41,8 @@ router.get("/weatherDataByType", asyncHandler(async (req, res, next) => {
   var result = await WeatherAPI.getWeatherDataByType(req);
   res.status(result.code).json(result);
 }));
+
+router.post("/calculateCenters", asyncHandler(async (req, res, next) => {
+  var result = await DrawAreas.calculateDrawAreasCenter();
+  res.status(result.code).json(result.msg);
+}));
