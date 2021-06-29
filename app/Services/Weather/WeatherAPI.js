@@ -5,7 +5,7 @@ import { DateTime } from '../../utils/DateTime.js';
 import { Ajax } from '../../request/ajax.js';
 import qs from 'qs';
 import { InsertJson } from '../../controllers/InsertJson.js';
-import {JsonHelper} from '../../Helpers/JsonHelper.js';
+import { JsonHelper } from '../../Helpers/JsonHelper.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -21,18 +21,20 @@ export class WeatherAPI {
         var error = false;
 
         var drawAreas = await DrawAreas.getDrawAreasFromDb();
+        // var count = 0;
 
         for (const drawArea of drawAreas) {
             // Get weather data from API
             apiBody.coord = drawArea.center.coordinates[0] + "," + drawArea.center.coordinates[1];
             apiBody.vars = req.body.vars;
-            console.log(apiBody);
-            Ajax.postRequest(process.env.WEATHER_API, qs.stringify(apiBody), headers, function (data) {
+            await Ajax.postRequest(process.env.WEATHER_API, qs.stringify(apiBody), headers, function (data) {
                 data.BGRI11 = drawArea.properties.BGRI11;
                 data = JsonHelper.convertJson(data);
-                // InsertJson.insertJsonDataInBd(data, WeatherAPI.collectionName);
+                // count++;
+                // console.log(count);
+                InsertJson.insertJsonDataInBd(data, WeatherAPI.collectionName);
             }, function (error) {
-                console.log(error);
+                // console.log(error);
                 error = true;
             });
         }
@@ -63,8 +65,6 @@ export class WeatherAPI {
         var weatherData = { BGRI11: data.BGRI11, atts: data.atts, data: data.data[index] };
 
         return weatherData;
-
-        // return { "msg": "success", "data": weatherData, "code": 201 };
     }
 
     static async getWeatherData(date, weatherVar) {
