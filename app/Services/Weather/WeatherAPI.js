@@ -21,7 +21,6 @@ export class WeatherAPI {
         var error = false;
 
         var drawAreas = await DrawAreas.getDrawAreasFromDb();
-        // var count = 0;
 
         for (const drawArea of drawAreas) {
             // Get weather data from API
@@ -30,11 +29,8 @@ export class WeatherAPI {
             await Ajax.postRequest(process.env.WEATHER_API, qs.stringify(apiBody), headers, function (data) {
                 data.BGRI11 = drawArea.properties.BGRI11;
                 data = JsonHelper.convertJson(data);
-                // count++;
-                // console.log(count);
                 InsertJson.insertJsonDataInBd(data, WeatherAPI.collectionName);
             }, function (error) {
-                // console.log(error);
                 error = true;
             });
         }

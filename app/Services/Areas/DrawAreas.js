@@ -16,12 +16,14 @@ export class DrawAreas {
         var weatherData = await WeatherAPI.getWeatherData(date, WeatherAPI.weatherVars.temperature);
         var weatherObj;
 
-        data.forEach(function (drawArea, i) {
-            weatherObj = weatherData.find(element =>
-                element.BGRI11 === drawArea.properties.BGRI11
-            );
-            drawArea.weatherData = weatherObj;
-        });
+        if (weatherData && weatherData.length) {
+            data.forEach(function (drawArea, i) {
+                weatherObj = weatherData.find(element =>
+                    element.BGRI11 === drawArea.properties.BGRI11
+                );
+                drawArea.weatherData = weatherObj;
+            });
+        }
 
         return { "msg": "success", "data": data, "code": 201 };
     }
